@@ -29,13 +29,23 @@ class BBoxConverter extends JsonConverter<BBox, List<dynamic>> {
   @override
   BBox fromJson(List<dynamic> json) {
     return BBox(
-      min: (long: json[0], lat: json[1]),
-      max: (long: json[2], lat: json[3]),
+      min: (long: checkDouble(json[0]), lat: checkDouble(json[1])),
+      max: (long: checkDouble(json[2]), lat: checkDouble(json[3])),
     );
   }
 
   @override
   List<double> toJson(BBox object) {
     return object.asList;
+  }
+
+  static double checkDouble(dynamic value) {
+    if (value is String) {
+      return double.parse(value);
+    } else if (value is int) {
+      return value.toDouble();
+    } else {
+      return value;
+    }
   }
 }
