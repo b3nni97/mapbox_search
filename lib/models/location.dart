@@ -24,12 +24,22 @@ class OptionalLocationConverter
   Location? fromJson(List<dynamic>? json) {
     return json == null
         ? null
-        : (long: json[0] as double, lat: json[1] as double);
+        : (long: checkDouble(json[0]), lat: checkDouble(json[1]));
   }
 
   @override
   List<double>? toJson(Location? object) {
     return object == null ? null : object.asList;
+  }
+
+  static double checkDouble(dynamic value) {
+    if (value is String) {
+      return double.parse(value);
+    } else if (value is int) {
+      return value.toDouble();
+    } else {
+      return value;
+    }
   }
 }
 
